@@ -1,4 +1,4 @@
 ZMQ_Quest
 
 
-eventuele services: rekenmachine, proxyscraper, love meter ( spel)
+eventuele services: rekenmachine, love meter ( spel)
