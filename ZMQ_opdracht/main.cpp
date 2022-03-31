@@ -39,7 +39,7 @@ int main( void )
 
             if (strcmp((char*) msg->data(), "ToonSpecialService>CooleLiefdesMeter?>Start") == 0)
             {
-              sendtpic =  "ToonSpecialService>CooleLiefdesMeter!>Send ur 2 Names or 2 birth dates to ToonSpecialService>CooleLiefdesMeter?>Names or Dates";
+              sendtpic =  "ToonSpecialService>CooleLiefdesMeter!>Send ur 2 Names or 2 birth dates like (21/01/1999) to ToonSpecialService>CooleLiefdesMeter?>Names or Dates";
               pusher.send(sendtpic.c_str(), sendtpic.length());
 
 
@@ -48,7 +48,13 @@ int main( void )
             }
             else if (strcmp((char*) msg->data(), "ToonSpecialService>CooleLiefdesMeter?>Names>") == 0)
             {
-              // do something else
+              printf("got the names");
+              std::cout << "Follow this command: " << msg;
+
+            }
+            else if (strcmp((char*) msg->data(), "ToonSpecialService>CooleLiefdesMeter?>Dates>") == 0)
+            {
+              printf("got the dates");
             }
             /* more else if clauses */
             else /* default: */

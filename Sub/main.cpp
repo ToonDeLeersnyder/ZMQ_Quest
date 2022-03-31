@@ -7,7 +7,7 @@ int main( void )
     try
     {
         zmq::context_t context(1);
-        std::string topic( "example>secretMessageService!>Toon De Leersnyder>" );
+        //std::string topic( "example>secretMessageService!>Toon De Leersnyder>" );
         std::string sendtpic( "example>secretMessageService?>Toon De Leersnyder>Putin>9281f2de79efbacf6a49399829871f1fc28bb17d>#NoNukesPlease>");
 
         //Incoming messages come in here
@@ -20,7 +20,7 @@ int main( void )
         pusher.connect( "tcp://benternet.pxl-ea-ict.be:24041" );
         subscriber.connect( "tcp://benternet.pxl-ea-ict.be:24042" );
 
-        subscriber.setsockopt( ZMQ_SUBSCRIBE, topic.c_str(), topic.length()  );
+        subscriber.setsockopt( ZMQ_SUBSCRIBE, NULL, 0  );
 
         zmq::message_t * msg = new zmq::message_t();
 

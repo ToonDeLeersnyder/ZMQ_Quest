@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.1, 2022-03-22T10:31:09. -->
+<!-- Written by QtCreator 5.0.1, 2022-03-29T09:36:48. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -300,6 +300,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseTerminal">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/Administrator/Documents/Gitkraken/ZMQ_Quest/build-ZMQ_opdracht_client-Imported_Kit-Debug</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
