@@ -19,6 +19,9 @@ int main( void )
         zmq::socket_t subscriber( context, ZMQ_SUB );
 
         pusher.connect( "tcp://benternet.pxl-ea-ict.be:24041" );
+       // pusher.connect( "tcp://localhost:24041" );
+       // subscriber.connect( "tcp://localhost::24042" );
+
         subscriber.connect( "tcp://benternet.pxl-ea-ict.be:24042" );
 
         subscriber.setsockopt( ZMQ_SUBSCRIBE, topic.c_str(), topic.length()  );
@@ -42,7 +45,10 @@ int main( void )
         {
             char service[101];
             printf("what service do you want?\n\r");
+//            sendtpic = "ToonSpecialService>CooleLiefdesMeter?>Start";
+//            pusher.send(sendtpic.c_str(), sendtpic.length());
             scanf("%100s", service);
+
 
             if (!strcmp(service, "liefdesmeter"))
             {
@@ -57,7 +63,7 @@ int main( void )
                     sendtpic = "ToonSpecialService>CooleLiefdesMeter?>Names>";
                     std::string var = sendtpic + naam1 + ">>" + naam2;
                     std::cout << "Follow this command: " << var;
-                    pusher.send(sendtpic.c_str(), sendtpic.length());
+                    pusher.send(var.c_str(), var.length());
 
                 }
                 else if (!strcmp(keuze, "dates"))
@@ -66,7 +72,9 @@ int main( void )
                     scanf("%100s \n\r", date1);
                     scanf("%100s", date2);
                     sendtpic = "ToonSpecialService>CooleLiefdesMeter?>Dates>";
-                    pusher.send(sendtpic.c_str(), sendtpic.length());
+                    std::string var = sendtpic + date1 + ">>" + date2;
+                    std::cout << "Follow this command: " << var;
+                    pusher.send(var.c_str(), var.length());
 
                 }
            }
