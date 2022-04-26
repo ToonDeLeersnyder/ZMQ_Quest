@@ -6,7 +6,9 @@ class server
 {
 public:
     server();
-    void runserver();
+    void liefdesmeterNames();
+    void liefdesmeterDates();
+
 };
 
 #endif // SERVER_H

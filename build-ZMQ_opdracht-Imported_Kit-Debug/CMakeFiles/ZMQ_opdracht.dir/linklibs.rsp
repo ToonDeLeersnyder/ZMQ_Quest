@@ -1,1 +1,0 @@
-  -LC:/Users/Administrator/Documents/Gitkraken/ZMQ_Quest/ZMQ_opdracht/External/ZMQ/lib  -Wl,-Bstatic -lzmq -Wl,-Bdynamic -lws2_32 -liphlpapi -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
