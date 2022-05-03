@@ -14,11 +14,12 @@ link_directories(
 )
 
 set(project_headers
-
+        client.h
 )
 
 set(project_sources
         main.cpp
+        client.cpp
 )
 
 set(ALL_LIBS

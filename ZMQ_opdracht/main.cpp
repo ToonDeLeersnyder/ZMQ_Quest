@@ -8,6 +8,7 @@
 
 int main( void )
 {
-    server();
+    Server s1;
+    s1.serverStart();
 
 }
