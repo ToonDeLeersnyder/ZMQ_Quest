@@ -1,10 +1,8 @@
 #include "server.h"
-#include <iostream>
-#include <string.h>
-#include <stdio.h>
-#include <zmq.hpp>
+
 
 Server::Server()
+:context(1),pusher(context, ZMQ_PUSH),subscriber(context,ZMQ_SUB)
 {
 
 
@@ -14,18 +12,10 @@ void Server::serverStart()
 {
     try
     {
-        zmq::context_t context(1);
+
 
         sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER::AAAAAAAAAAAAp");
 
-
-
-
-
-
-
-        zmq::socket_t pusher( context, ZMQ_PUSH );
-        zmq::socket_t subscriber( context, ZMQ_SUB );
 
         pusher.connect( "tcp://benternet.pxl-ea-ict.be:24041" );
         //pusher.connect( "tcp://localhost:24041" );

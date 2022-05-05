@@ -41,6 +41,8 @@ def producer():
         elif service == "rekenmachine":
             print ("rekenmachine")
             
+            
+            
         msg = subscriber.recv()
         
         print (msg)

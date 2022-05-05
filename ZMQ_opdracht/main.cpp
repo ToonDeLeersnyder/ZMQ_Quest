@@ -8,7 +8,7 @@
 
 int main( void )
 {
-    Server s1;
-    s1.serverStart();
+    Server * s1 = new Server();
+    s1->serverStart();
 
 }

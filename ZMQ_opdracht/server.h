@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <iostream>
+#include <zmq.hpp>
 
 class Server
 {
@@ -16,9 +17,15 @@ public:
     void parseDates (std::string date1 ,  int* d , int* m , int* y);
 
 
+
     std::string sendtpic;
     std::string USERID;
     std::string topic = ( "ToonSpecialService>CooleLiefdesMeter?>" );
+private:
+    zmq::context_t context;
+    zmq::socket_t pusher;
+    zmq::socket_t subscriber;
+
 
 };
 
