@@ -11,16 +11,20 @@ public:
     Server();
     void serverStart();
     void liefdesmeterNames(std::string var, std::string var2);
-    void liefdesmeterDates(std::string date1 , std::string date2);
+    int calculateDateLove(std::string date1 , std::string date2);
     bool checkDates(std::string date);
     bool isLeap(int year);
     void parseDates (std::string date1 ,  int* d , int* m , int* y);
+    int calculateNameLove( std::string naam1, std::string  naam2  );
+    int Sum_of_Digits(int waarde);
 
 
 
     std::string sendtpic;
     std::string USERID;
     std::string topic = ( "ToonSpecialService>CooleLiefdesMeter?>" );
+    std:: string variable1;
+    std:: string variable2;
 private:
     zmq::context_t context;
     zmq::socket_t pusher;
