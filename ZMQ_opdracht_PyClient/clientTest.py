@@ -28,22 +28,25 @@ def producer():
     
     while True:        
         
-        service = input("what service do you want? (liefdesmeter) \n\r") 
+        service = input("what service do you want? (type liefdesmeter) \n\r") 
         if service == "liefdesmeter":
             invalid = 0;
-            keuze = input("want to compare names or dates?\n\r")
+            keuze = input("want to compare names or dates? type 'names' or 'dates'\n\r")
             if keuze == "names":
-                naam1 = input("geef naam 1 in (vb: jef):")
-                naam2 = input("geef naam 2 in (vb: jef):")
+                naam1 = input("geef naam 1 in (vb: jef) en enter:")
+                naam2 = input("geef naam 2 in (vb: jef) en enter:")
                 sendtpic = ("ToonSpecialService>CooleLiefdesMeter?>Names>" + clientID + ">")
                 var = sendtpic + naam1 + ">>" + naam2
                 pusher.send_string(var)
             elif keuze == "dates":
-                datum1 = input("geef datum 1 in (vb: 31/12/2002):")
-                datum2 = input("geef datum 2 in (vb: 31/12/2002):")
+                datum1 = input("geef datum 1 in (vb: 31/12/2002) en enter:")
+                datum2 = input("geef datum 2 in (vb: 31/12/2002) en enter:")
                 sendtpic = ("ToonSpecialService>CooleLiefdesMeter?>Dates>" + clientID + ">")
                 var = sendtpic + datum1 + ">>" + datum2
-                pusher.send_string(var)                
+                pusher.send_string(var)
+            else:
+                print("invalid compare type")
+                invalid = 1
         
         else:
             
@@ -59,12 +62,38 @@ def producer():
             msg = subscriber.recv()
             if msg == "b'ToonSpecialService>CooleLiefdesMeter!>USER:" + clientID + ":InvalidDates'":
                 print ("1 or 2 dates are invalid, try again! \n\r")
+                print ("\n\r")
+                print ("\n\r")
+                print ("\n\r")
+            elif msg == "b'ToonSpecialService>CooleLiefdesMeter!>USER:" + clientID + ":ServiceNotInUse'":
+                print ("service not in use")
+                print ("\n\r")
+                print ("\n\r")
+                print ("\n\r")
+            else:
+                
+                msg = msg.decode()
+                splitblah = msg.split(":" + clientID + ":")
+                
+                print ("\n\r")
+                print ("\n\r")
+                print ("\n\r")
+                if int(splitblah[1]) <= 20:
+                    print("Aw man this aint true love, ur love percentage is only " + splitblah[1] + "% \n\r")
+                elif int(splitblah[1]) >20 and int(splitblah[1]) <=60:
+                    print(" I see some sparks between you! love percentage is " + splitblah[1] + "% \n\r")
+                elif int(splitblah[1]) >60 and int(splitblah[1]) <=80:
+                    print(" Damn almost true love! love percentage is " + splitblah[1] + "% \n\r")
+                elif int(splitblah[1]) >80 :
+                    print(" True love! Thats what i like to see :) " + splitblah[1] + "% \n\r")
+                print ( "<<<<<<<<love>>>>>>>>:"  + splitblah[1] )
+                
+                print ("\n\r")
+                print ("\n\r")
+                print ("\n\r")
             
             
-            print (msg)
-            print ("\n\r")
-            print ("\n\r")
-            print ("\n\r")
+           
         
         
         
