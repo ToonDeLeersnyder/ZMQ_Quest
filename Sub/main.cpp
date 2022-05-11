@@ -27,16 +27,18 @@ int main( void )
 
 
        // pusher.send( "example>quest?>Toon De Leersnyder>", 38 );
-        pusher.send(sendtpic.c_str(), sendtpic.length());
 
+        std::string service;
 
         while( subscriber.connected() )
         {
 
-            subscriber.recv( msg );
+            std::cin >> service;
+            pusher.send(service.c_str(), service.length());
+            //subscriber.recv( msg );
 
-            std::cout << "Subscribed : [" << std::string( (char*) msg->data(), msg->size() ) << "]" << std::endl;
-            printf("yeet3");
+            //std::cout << "Subscribed : [" << std::string( (char*) msg->data(), msg->size() ) << "]" << std::endl;
+            //printf("yeet3");
         }
     }
     catch( zmq::error_t & ex )
