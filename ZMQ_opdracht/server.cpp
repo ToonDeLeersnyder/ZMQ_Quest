@@ -40,7 +40,7 @@ void Server::serverStart()
             if (strcmp((char*) msg->data(), "ToonSpecialService>CooleLiefdesMeter?>Start") == 0)
             {
 
-              sendtpic =  "ToonSpecialService>CooleLiefdesMeter!>Send ur 2 Names or 2 birth dates like (21/1/1999) to ToonSpecialService>CooleLiefdesMeter?>Names or Dates";
+              sendtpic =  "ToonSpecialService>CooleLiefdesMeter!>Send ur 2 Names like jef etc  or 2 birth dates like (21/1/1999) to ToonSpecialService>CooleLiefdesMeter?>Names>[client id 8 char long]>[naam1]>>[naam2] or ToonSpecialService>CooleLiefdesMeter?>dates>[client id 8 char long]>[date1]>>[date2]  you will get a love percentage as return.";
               pusher.send(sendtpic.c_str(), sendtpic.length());
 
             }
