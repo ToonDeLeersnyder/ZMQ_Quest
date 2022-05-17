@@ -1,4 +1,1 @@
-ZMQ_Quest
-
-
-eventuele services: rekenmachine, love meter ( spel)
+Opdracht Network Programing 2EAI
