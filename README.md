@@ -51,6 +51,9 @@ needed files.
  
 ## Commands
 
+![image](https://user-images.githubusercontent.com/79915408/168831229-ef7a7f5a-48c5-412b-9aea-b5e6b5157ddc.png)
+
+
  ### python client
  
  the client listens to "ToonSpecialService>CooleLiefdesMeter!>USER:[client id 8 char long]:" as zmq topic
