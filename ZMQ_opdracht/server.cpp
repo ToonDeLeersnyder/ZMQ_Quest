@@ -162,6 +162,7 @@ bool Server::checkDates(std::string date)
     int m;
     int y;
     parseDates(date ,  &d ,  &m ,  &y);
+
     std::cout << "got the dates " << d<<  " and " << m << " and " << y  << "\n";
 
     const int MAX_VALID_YR = 2300;
@@ -221,7 +222,7 @@ void Server::parseDates(std::string date1 , int* d , int* m , int* y)
     variable3 = variable2.substr(0, variable2.find("/"));
     variable4 = variable2.substr(variable2.find("/")+ 1);
 
-    std::cout << "got the dates " << variable1 <<  " and " << variable3 << " and " << variable4  << "\n";
+
 
      *d = std::stoi( variable1 );
      *m = std::stoi( variable3 );
