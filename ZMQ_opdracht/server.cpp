@@ -14,7 +14,7 @@ void Server::serverStart()
     {
 
 
-        sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER::AAAAAAAAAAAAp");
+
 
 
         pusher.connect( "tcp://benternet.pxl-ea-ict.be:24041" );

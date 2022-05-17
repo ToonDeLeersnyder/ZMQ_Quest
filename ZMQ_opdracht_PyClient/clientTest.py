@@ -8,16 +8,16 @@ import PySimpleGUI as sg
 
 # Define the window's contents
 layout = [[sg.Text("what service do you want? (type liefdesmeter)")],
-          [sg.Input(key='-INPUT1-')],
+          [sg.Input(key='-INPUT1-', do_not_clear = False)],
           [sg.Text("want to compare names or dates? click 'names' or 'dates'")],
           [sg.Checkbox('Names:', default=True, key="-NamesCheck-"),
            sg.Checkbox('Dates:', default=False, key="-DatesCheck-")],
           [sg.Text("geef naam 1 of datum 1 in in (vb: jef of dd/mm/yyyy)")],
-          [sg.Input(key='-INPUT3-')],
+          [sg.Input(key='-INPUT3-', do_not_clear = False)],
           [sg.Text("geef naam 2 of datum 2 in in (vb: jef of dd/mm/yyyy)")],
-          [sg.Input(key='-INPUT4-')],
+          [sg.Input(key='-INPUT4-', do_not_clear = False)],
           [sg.Text(size=(40,1), key='-OUTPUT-')],
-          [sg.Button('Ok'), sg.Button('Quit')]]
+	  [sg.Button('Ok'), sg.Button('Quit')]]
 
 # Create the window
 window = sg.Window('ToonSpecialService', layout)
@@ -25,7 +25,12 @@ window = sg.Window('ToonSpecialService', layout)
 
     
     
-
+def make_win2():
+    layout = [[sg.Text('ChatClient')],
+              [sg.Output(size=(110, 20), font=('Helvetica 10'))],
+              [sg.Multiline(size=(70, 5), enter_submits=False, key='-QUERY-', do_not_clear=False)],
+              [ sg.Button('Exit') , sg.Button('SEND1', button_color=(sg.YELLOWS[0], sg.BLUES[0]), bind_return_key=True)]]
+    return sg.Window('Second Window', layout, finalize=True)
 
 
 
@@ -55,12 +60,17 @@ def producer():
     subscriber.setsockopt_string( zmq.SUBSCRIBE, "ToonSpecialService>CooleLiefdesMeter!>USER:" + clientID + ":")
     
     
-    while True:        
+    while True:
+        launched = False
         event, values = window.read()
+        
         #    See if user wants to quit or window was closed
         if event == sg.WINDOW_CLOSED or event == 'Quit':
             break
-         
+        elif event == 'SEND1':
+            query = value['-QUERY-'].rstrip()
+            # EXECUTE YOUR COMMAND HERE
+            print('The command you entered was {}'.format(query), flush=True)         
         if values['-INPUT1-'] == "liefdesmeter":
             invalid = 0
             if values['-NamesCheck-']:
@@ -106,12 +116,15 @@ def producer():
                 
                
                 if int(splitblah[1]) <= 20:
-                    print("Aw man this aint true love, ur love percentage is only " + splitblah[1] + "% \n\r")
+                   
+                    window['-OUTPUT-'].update(" Aw man this aint true love, ur love percentage is only " + splitblah[1] + "%")
                 elif int(splitblah[1]) >20 and int(splitblah[1]) <=60:
                     window['-OUTPUT-'].update(" I see some sparks between you! love percentage is " + splitblah[1] + "%")
                     
                 elif int(splitblah[1]) >60 and int(splitblah[1]) <=80:
                     window['-OUTPUT-'].update(" Damn almost true love! love percentage is " + splitblah[1] + "%")
+                    window2 = make_win2()
+                    event2 , values2 = window2.read()
                     
                 elif int(splitblah[1]) >80 :
                     window['-OUTPUT-'].update("  True love! Thats what i like to see :)  " + splitblah[1] + "%")
