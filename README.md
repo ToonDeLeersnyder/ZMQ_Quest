@@ -36,7 +36,7 @@ needed files.
   * sudo make -j4 install 
 
 * c++ coding program (i used qt) 
-  * open cmakelist file in the "zmq_opdracht" folder to open the program.
+  * open cmakelist file in the "zmq_opdracht" folder as project to open the program.
 
 
 
