@@ -103,10 +103,11 @@ def producer():
                 
                 msg = msg.decode()
                 splitblah = msg.split(":" + clientID + ":")
-                
-               
-                if int(splitblah[1]) <= 20:
-                    print("Aw man this aint true love, ur love percentage is only " + splitblah[1] + "% \n\r")
+                if splitblah[1] == "InvalidDates":
+                    
+                   window['-OUTPUT-'].update("1 or 2 dates are invalid, try again!")
+                elif int(splitblah[1]) <= 20:
+                    window['-OUTPUT-'].update("Aw man this aint true love, ur love percentage is only " + splitblah[1] + "%")
                 elif int(splitblah[1]) >20 and int(splitblah[1]) <=60:
                     window['-OUTPUT-'].update(" I see some sparks between you! love percentage is " + splitblah[1] + "%")
                     

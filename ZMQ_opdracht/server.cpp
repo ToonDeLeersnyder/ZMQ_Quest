@@ -56,6 +56,11 @@ void Server::serverStart()
               text =  std::string( (char*) msg->data(),msg->size() );
               textParsed = text.substr(text.find("?>Names") + 8);
               USERID = textParsed.substr(0, textParsed.find(">"));
+              if ((USERID.length() >=9 or USERID.length() <= 7)  and USERID.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+              {
+                  USERID = "nicetry!";
+                  textParsed = ">Jo>>Mama";
+              }
               temp = textParsed.substr(9, textParsed.find(">>"));
               variable1 = temp.substr(0, temp.find(">>"));
               variable2 = textParsed.substr(textParsed.find(">>") + 2);
@@ -215,7 +220,12 @@ void Server::parseDates(std::string date1 , int* d , int* m , int* y)
     std::string variable2;
     std::string variable3;
     std::string variable4;
+    std::size_t found = date1.find("/");
+    if (found==std::string::npos)
+    {
+    date1 = "01/01/2000";
 
+    }
 
     variable1 = date1.substr(0, date1.find("/"));
     variable2 = date1.substr(date1.find("/") + 1);
