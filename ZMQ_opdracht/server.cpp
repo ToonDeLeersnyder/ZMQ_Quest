@@ -1,4 +1,7 @@
 #include "server.h"
+#include <ctime>
+#include <iostream>
+#include <fstream>
 
 
 Server::Server()
@@ -13,7 +16,7 @@ void Server::serverStart()
     try
     {
 
-
+        csvread();
         sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER::AAAAAAAAAAAAp");
 
 
@@ -22,6 +25,7 @@ void Server::serverStart()
 
         subscriber.connect( "tcp://benternet.pxl-ea-ict.be:24042" );
         //subscriber.connect( "tcp://0.0.0.0:24042" );
+
 
 
         subscriber.setsockopt( ZMQ_SUBSCRIBE, topic.c_str(), topic.length()  );
@@ -100,9 +104,26 @@ void Server::serverStart()
               {
                   int love = 0;
                   std::cout << "dates are valid, continue\n";
-                  love = calculateDateLove(variable1 , variable2);
-                  sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER:" + USERID + ":" + std::to_string(love));
-                  pusher.send(sendtpic.c_str(), sendtpic.length());
+
+                  if (Agecheck( variable1, variable2))
+                  {
+                      sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER:" + USERID + ":This is kind of sus, please check https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=nl&la=N&cn=2022032101&table_name=wet");
+                      pusher.send(sendtpic.c_str(), sendtpic.length());
+
+
+
+                  }
+                  else
+                  {
+                      love = calculateDateLove(variable1 , variable2);
+                      sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER:" + USERID + ":" + std::to_string(love));
+                      pusher.send(sendtpic.c_str(), sendtpic.length());
+
+
+
+                  }
+
+
 
               }
               else{
@@ -114,6 +135,89 @@ void Server::serverStart()
             }
             /* more else if clauses */
 
+            else if (strncmp((char*) msg->data(), "ToonSpecialService>CooleLiefdesMeter?>Register>", 47) == 0)
+            {
+                std::string text;
+                std::string textParsed;
+                std::string variable1;
+                std::string variable2;
+                std::string temp;
+                std::string tempName;
+                std::string tempDate;
+                int love = 0;
+                int love1 = 0;
+                int love2 = 0;
+
+                text =  std::string( (char*) msg->data(),msg->size() );
+                textParsed = text.substr(text.find("?>Register") + 11);
+                USERID = textParsed.substr(0, textParsed.find(">"));
+                if ((USERID.length() >=9 or USERID.length() <= 7)  and USERID.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890") != std::string::npos)
+                {
+                    USERID = "nicetry!";
+                    textParsed = ">Jo>>Mama";
+                }
+                temp = textParsed.substr(9, textParsed.find(">>"));
+                variable1 = temp.substr(0, temp.find(">>"));
+                variable2 = textParsed.substr(textParsed.find(">>") + 2);
+                std::cout << "got the name " << variable1 << " and date " << variable2 <<  " from user " << USERID << "\n";
+
+                std::fstream fout;
+                fout.open("register.csv", std::ios::out | std::ios::app);
+                fout << variable1 << ", "
+                     << variable2
+                     << "\n";
+                fout.close();
+
+                for(int i=0;i<content.size();i++)
+                {
+
+                    for(int j=0;j<content[i].size();j++)
+                    {
+                        std::cout<<content[i][j]<<" ";
+                        love1 = calculateNameLove(variable1, content[i][0]);
+                        if (!Agecheck( variable2, content[i][1]))
+                        {
+                            love2 = calculateDateLove(variable1 , content[i][1]);
+                        }
+
+                        if ((love1 > love) and (!Agecheck( variable2, content[i][1])))
+                        {
+                            love = love1;
+                            tempName = content[i][0];
+                            tempDate = content[i][1];
+
+                        }
+                        if ((love2 > love) and (!Agecheck( variable2, content[i][1])))
+                        {
+                            love = love2;
+                            tempName = content[i][0];
+                            tempDate = content[i][1];
+
+                        }
+                    }
+
+                }
+                if (love == 0)
+                {
+
+                    sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER:" + USERID + ":geen geschikte kandidaat");
+                    //pusher.send(sendtpic.c_str(), sendtpic.length());
+
+                }
+                else
+                {
+                    sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER:" + USERID + ":REG" + tempName + ":" + tempDate + ":" + std::to_string(love));
+                    //pusher.send(sendtpic.c_str(), sendtpic.length()); PUSH NOG NIET WANT CLIENT WERKT NIET OP RECIEVE VAN DIT TYPE
+
+
+
+
+                }
+
+                std::cout << "got the name " << tempName << " and date " << tempDate <<  " from user " << love << "\n";
+
+
+            }
             else /* default: */
             {
                 sendtpic = ( "ToonSpecialService>CooleLiefdesMeter!>USER:" + USERID + ":ServiceNotInUse");
@@ -248,8 +352,78 @@ int Server::Sum_of_Digits(int waarde)
               sum +=(waarde%10);
               waarde/=10;
           }
-        return sum;
+       return sum;
+}
+
+bool Server::Agecheck(std::string date1, std::string date2)
+{
+    const int MAXLEN = 80;
+    char Yeartoday[MAXLEN];
+    time_t t = time(0);
+    strftime(Yeartoday, MAXLEN, "%Y", localtime(&t));
+    std::cout << Yeartoday << '\n';
+
+    int d1;
+    int d2;
+    int m1;
+    int m2;
+    int y1;
+    int y2;
+
+    parseDates(date1 ,  &d1 ,  &m1 ,  &y1);
+    parseDates(date2 ,  &d2 ,  &m2 ,  &y2);
+
+    int calculated_year1 = atoi( Yeartoday) - y1;
+    int calculated_year2 = atoi( Yeartoday) - y2;
+
+    if ((calculated_year1 >= 18 and calculated_year2 <= 16) or (calculated_year2 >= 18 and calculated_year1 <= 16))
+    {
+        return 1;
     }
+    else
+    {
+        return 0;
+    }
+}
+
+void Server::csvread()
+{
+    std::fstream file;
+
+
+
+    std::vector<std::string> row;
+    std::string line, word;
+
+    file.open("register.csv", std::ios::in );
+    if(file.is_open())
+    {
+    while(getline(file, line))
+    {
+    row.clear();
+
+    std::stringstream str(line);
+
+    while(getline(str, word, ','))
+    row.push_back(word);
+    content.push_back(row);
+    }
+    }
+    else
+    std::cout<<"Could not open the file\n";
+
+    for(int i=0;i<content.size();i++)
+    {
+        for(int j=0;j<content[i].size();j++)
+        {
+            std::cout<<content[i][j]<<" ";
+        }
+    std::cout<<"\n";
+    }
+
+
+
+}
 
 int Server::calculateNameLove( std::string naam1, std::string  naam2  )
 {

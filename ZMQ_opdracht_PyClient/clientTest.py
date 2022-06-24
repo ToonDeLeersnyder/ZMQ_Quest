@@ -11,7 +11,8 @@ layout = [[sg.Text("what service do you want? (type liefdesmeter)")],
           [sg.Input(key='-INPUT1-')],
           [sg.Text("want to compare names or dates? click 'names' or 'dates'")],
           [sg.Checkbox('Names:', default=True, key="-NamesCheck-"),
-           sg.Checkbox('Dates:', default=False, key="-DatesCheck-")],
+           sg.Checkbox('Dates:', default=False, key="-DatesCheck-"),
+           sg.Checkbox('registerCheck:', default=False, key="-Register-")],
           [sg.Text("geef naam 1 of datum 1 in in (vb: jef of dd/mm/yyyy)")],
           [sg.Input(key='-INPUT3-')],
           [sg.Text("geef naam 2 of datum 2 in in (vb: jef of dd/mm/yyyy)")],
@@ -75,6 +76,12 @@ def producer():
                 sendtpic = ("ToonSpecialService>CooleLiefdesMeter?>Dates>" + clientID + ">")
                 var = sendtpic + datum1 + ">>" + datum2
                 pusher.send_string(var)
+            elif values['-Register-']:
+                name1 = values['-INPUT3-']
+                datum1 = values['-INPUT4-']
+                sendtpic = ("ToonSpecialService>CooleLiefdesMeter?>Register>" + clientID + ">")
+                var = sendtpic + name1 + ">>" + datum1
+                pusher.send_string(var)
             else:
                 window['-OUTPUT-'].update("invalid compare type")
                 
@@ -98,7 +105,8 @@ def producer():
                 
             elif msg == "b'ToonSpecialService>CooleLiefdesMeter!>USER:" + clientID + ":ServiceNotInUse'":
                 window['-OUTPUT-'].update("service not in use")
-                
+            elif msg == "b'ToonSpecialService>CooleLiefdesMeter!>USER:" + clientID + ":This is kind of sus, please check https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=nl&la=N&cn=2022032101&table_name=wet":
+                window['-OUTPUT-'].update("ur sus bro")    
             else:
                 
                 msg = msg.decode()
@@ -106,6 +114,9 @@ def producer():
                 if splitblah[1] == "InvalidDates":
                     
                    window['-OUTPUT-'].update("1 or 2 dates are invalid, try again!")
+                if splitblah[1] == "This is kind of sus, please check https://www.ejustice.just.fgov.be/cgi_loi/change_lg.pl?language=nl&la=N&cn=2022032101&table_name=wet":
+
+                    window['-OUTPUT-'].update("UR SUS BRO")
                 elif int(splitblah[1]) <= 20:
                     window['-OUTPUT-'].update("Aw man this aint true love, ur love percentage is only " + splitblah[1] + "%")
                 elif int(splitblah[1]) >20 and int(splitblah[1]) <=60:
